@@ -1,54 +1,43 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
 
 namespace StaticFilesApi.Controllers
 {
-    public class HomeController : Controller
+    public class FilesController : ControllerBase
     {
         [HttpGet]
-        public ActionResult Index()
+        public IActionResult GetFiles()
         {
-            Console.WriteLine("Index method");
-            return View();
-        }
-
-        [HttpGet]
-        public ActionResult Details(string id)
-        {
-            return View();
+            throw new NotImplementedException();
         }
 
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
+        [HttpGet("{action}/{fileId}")]
+        public IActionResult GetFile(string fileId)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            throw new NotImplementedException();
         }
 
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(string id)
+        public IActionResult SaveFile()
         {
-            return View();
+            throw new NotImplementedException();
+        }
+
+
+        [HttpPut]
+        public IActionResult Edit()
+        {
+            throw new NotImplementedException();
         }
 
         
-        public ActionResult Delete(string id)
+        [HttpDelete]
+        public IActionResult Delete()
         {
-            return View();
+            throw new NotImplementedException();
         }
     }
 }
