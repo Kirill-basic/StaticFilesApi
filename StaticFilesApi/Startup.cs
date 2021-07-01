@@ -41,9 +41,7 @@ namespace StaticFilesApi
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                pattern: "{controller=Files}/{action=Get}/{id?}");
+                endpoints.MapDefaultControllerRoute();
             });
         }
     }
