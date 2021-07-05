@@ -24,6 +24,13 @@ namespace StaticFilesApi.Controllers
         }
 
 
+        [HttpGet("{fileId}")]
+        public ActionResult<IEnumerable<FileInfo>> Get(string fileId)
+        {
+            throw new NotImplementedException();
+        }
+
+
         [HttpPost]
         public ActionResult<FileInfo> Create(FileStream file, FileInfo fileInfo)
         {
