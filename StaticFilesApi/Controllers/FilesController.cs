@@ -24,7 +24,7 @@ namespace StaticFilesApi.Controllers
         }
 
 
-        [HttpGet("{fileId}")]
+        [HttpGet("[controller]/[action]/{fileId}")]
         public ActionResult<IEnumerable<FileInfo>> Get(string fileId)
         {
             throw new NotImplementedException();
@@ -49,7 +49,14 @@ namespace StaticFilesApi.Controllers
         [HttpGet]
         public ActionResult<FileInfo> Delete(string id)
         {
-            return _filesService.DeleteFile(id);
+            var deleteResult = _filesService.DeleteFile(id);
+
+            if (deleteResult is null)
+            {
+                return NotFound();
+            }
+
+            return deleteResult;
         }
     }
 }
