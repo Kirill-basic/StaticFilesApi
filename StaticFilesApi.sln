@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.31321.278
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31521.260
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StaticFilesApi", "StaticFilesApi\StaticFilesApi.csproj", "{08167E0B-57CE-4247-84A2-051F155DFBC9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FilesServices", "FilesServices\FilesServices.csproj", "{09D96938-7B2F-4598-B259-0AE614128145}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{08167E0B-57CE-4247-84A2-051F155DFBC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{08167E0B-57CE-4247-84A2-051F155DFBC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{08167E0B-57CE-4247-84A2-051F155DFBC9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09D96938-7B2F-4598-B259-0AE614128145}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09D96938-7B2F-4598-B259-0AE614128145}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09D96938-7B2F-4598-B259-0AE614128145}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09D96938-7B2F-4598-B259-0AE614128145}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
