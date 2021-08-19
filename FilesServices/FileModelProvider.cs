@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace FilesServices
 {
-    class FileModelProvider : IFileModelProvider
+    public class FileModelProvider : IFileModelProvider
     {
         private readonly FileModelsContext _db;
 

@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace FilesServices
 {
-    interface IFilesProvider
+    public interface IFilesProvider
     {
         Task DeleteFile(string fileId);
         Task EditFile(Stream file, FileModel model);

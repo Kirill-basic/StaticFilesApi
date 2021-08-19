@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace FilesServices
 {
-    class FilesProvider : IFilesProvider
+    public class FilesProvider : IFilesProvider
     {
         public Task PostFile(Stream file, FileModel model)
         {

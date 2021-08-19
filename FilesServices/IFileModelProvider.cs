@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace FilesServices
 {
-    interface IFileModelProvider
+    public interface IFileModelProvider
     {
         public Task<IEnumerable<FileModel>> GetAsync();
 
