@@ -3,24 +3,32 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace StaticFilesApi.Controllers
 {
     public class FilesController : ControllerBase
     {
-        private readonly IFilesProvider _filesProvider;
+        private readonly IFilesService _filesService;
 
-        public FilesController(IFilesProvider filesProvider)
+        public FilesController(IFilesService filesService)
         {
-            _filesProvider = filesProvider;
+            _filesService = filesService;
         }
 
 
-        [HttpGet]
-        public ActionResult<IEnumerable<FileModel>> Get()
+        [HttpGet("[controller]")]
+        public async Task<ActionResult<IEnumerable<FileModel>>> GetAsync()
         {
-            return null;
+            var list =  await _filesService.GetAsync();
+
+            if (!list.Any())
+            {
+                return NotFound();
+            }
+
+            return Ok(list);
         }
 
 

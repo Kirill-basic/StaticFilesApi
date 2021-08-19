@@ -1,6 +1,8 @@
 ﻿using FolderService;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace FilesServices
 {
@@ -17,9 +19,9 @@ namespace FilesServices
             _modelsContext = modelsContext;
         }
 
-        public IEnumerable<FileModel> Get()
+        public async Task<IEnumerable<FileModel>> GetAsync()
         {
-            return null;
+            return await _modelsContext.FileModels.ToListAsync();
         }
 
 
