@@ -1,18 +1,17 @@
-﻿using StaticFilesApi.Models;
+﻿using FilesServices;
 using System.Collections.Generic;
 using System.IO;
-using FileInfo = StaticFilesApi.Models.FileInfo;
 
 namespace StaticFilesApi.Services
 {
     public interface IFilesService
     {
-        public List<FileInfo> GetFileList();
+        public List<FileModel> GetFileList();
 
-        public FileInfo AddFile(FileStream file, FileInfo fileInfo);
+        public FileModel AddFile(FileStream file, FileModel fileInfo);
 
-        public FileInfo EditFileInfo(FileInfo fileInfo);
+        public FileModel EditFileInfo(FileModel fileInfo);
 
-        public FileInfo DeleteFile(string fileId);
+        public FileModel DeleteFile(string fileId);
     }
 }

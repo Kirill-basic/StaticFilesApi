@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FilesServices;
+using Microsoft.AspNetCore.Mvc;
 using StaticFilesApi.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using FileInfo = StaticFilesApi.Models.FileInfo;
 
 namespace StaticFilesApi.Controllers
 {
@@ -18,21 +18,21 @@ namespace StaticFilesApi.Controllers
 
 
         [HttpGet]
-        public ActionResult<IEnumerable<FileInfo>> Get()
+        public ActionResult<IEnumerable<FileModel>> Get()
         {
             return _filesService.GetFileList();
         }
 
 
         [HttpGet("[controller]/[action]/{fileId}")]
-        public ActionResult<IEnumerable<FileInfo>> Get(string fileId)
+        public ActionResult<IEnumerable<FileModel>> Get(string fileId)
         {
             throw new NotImplementedException();
         }
 
 
         [HttpPost]
-        public ActionResult<FileInfo> Create(FileStream file, FileInfo fileInfo)
+        public ActionResult<FileModel> Post(FileStream file, FileModel fileInfo)
         {
             return _filesService.AddFile(file, fileInfo);
         }
@@ -40,14 +40,14 @@ namespace StaticFilesApi.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult<FileInfo> Edit(FileInfo fileInfo)
+        public ActionResult<FileModel> Put(FileModel fileInfo)
         {
             return _filesService.EditFileInfo(fileInfo);
         }
 
         
         [HttpGet]
-        public ActionResult<FileInfo> Delete(string id)
+        public ActionResult<FileModel> Delete(string id)
         {
             var deleteResult = _filesService.DeleteFile(id);
 

@@ -1,15 +1,20 @@
-﻿using System;
+﻿using FilesServices;
+using System;
 using System.Collections.Generic;
 using System.IO;
-using FileInfo = StaticFilesApi.Models.FileInfo;
 
 namespace StaticFilesApi.Services
 {
     public class FilesService : IFilesService
     {
-        public List<FileInfo> GetFileList()
+        public FilesService(IFolderHandler folderHandler, IFilesService filesService)
         {
-            var list = new List<FileInfo> { new FileInfo { Id = Guid.NewGuid().ToString(), Name = "test", Extension = ".png" } };
+
+        }
+
+        public List<FileModel> GetFileList()
+        {
+            var list = new List<FileModel> { new FileModel { Id = Guid.NewGuid().ToString(), Name = "test", Extension = ".png" } };
 
             return list;
         }
@@ -21,9 +26,12 @@ namespace StaticFilesApi.Services
         }
 
 
-        public FileInfo AddFile(FileStream file, FileInfo fileInfo)
+        public FileModel AddFile(FileStream file, FileModel fileInfo)
         {
-            return new FileInfo 
+
+
+
+            return new FileModel
             { 
                 Id = Guid.NewGuid().ToString(), 
                 Name = Path.GetFileName(file.Name), 
@@ -32,7 +40,7 @@ namespace StaticFilesApi.Services
         }
 
 
-        public FileInfo DeleteFile(string fileId)
+        public FileModel DeleteFile(string fileId)
         {
             throw new NotImplementedException();
         }
