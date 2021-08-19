@@ -2,7 +2,7 @@
 
 namespace FilesServices
 {
-    class FileModelsContext : DbContext
+    public class FileModelsContext : DbContext
     {
         public DbSet<FileModel> FileModels { get; set; }
 
