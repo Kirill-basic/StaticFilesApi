@@ -1,12 +1,11 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using StaticFilesApi.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using FilesServices;
 
 namespace StaticFilesApi
 {
@@ -16,6 +15,14 @@ namespace StaticFilesApi
         {
             services.AddTransient<IFolderHandler, FolderHandler>();
             services.AddTransient<IFilesService, FilesService>();
+            services.AddDbContext<FileModelsContext>(options =>
+            {
+                options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=FilesDb;Trusted_Connection=True;", builder =>
+                {
+                    builder.CommandTimeout(300);
+                    builder.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
+                });
+            });
 
             services.AddControllers();
         }
