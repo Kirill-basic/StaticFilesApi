@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using StaticFilesApi.Services;
 using System;
 using FilesServices;
+using FolderService;
 
 namespace StaticFilesApi
 {
@@ -13,8 +13,10 @@ namespace StaticFilesApi
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddTransient<IFolderHandler, FolderHandler>();
+            services.AddTransient<IFolderHandlerService, FolderHandlerService>();
             services.AddTransient<IFilesService, FilesService>();
+            services.AddTransient<IFilesProvider, FilesProvider>();
+
             services.AddDbContext<FileModelsContext>(options =>
             {
                 options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=FilesDb;Trusted_Connection=True;", builder =>
@@ -23,6 +25,7 @@ namespace StaticFilesApi
                     builder.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
                 });
             });
+            
 
             services.AddControllers();
         }
