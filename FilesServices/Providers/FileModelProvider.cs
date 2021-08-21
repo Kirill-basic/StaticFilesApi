@@ -19,6 +19,15 @@ namespace FilesServices
             return files;
         }
 
+
+        public async Task<FileModel> GetAsync(string fileId)
+        {
+            var fileModels = await _db.FileModels.FirstOrDefaultAsync(x => x.Id == fileId);
+
+            return fileModels;
+        }
+
+
         public async Task<FileModel> PostAsync(FileModel file)
         {
             _db.FileModels.Add(file);
@@ -26,6 +35,8 @@ namespace FilesServices
             return file;
         }
 
+
+        //TODO:try to remove ChangeTracker later
         public async Task<FileModel> PutAsync(FileModel file)
         {
             var fileModel = await _db.FileModels.FirstOrDefaultAsync(x => x.Id == file.Id);
@@ -33,11 +44,13 @@ namespace FilesServices
             {
                 return null;
             }
+            _db.ChangeTracker.Clear();
 
             _db.FileModels.Update(file);
             await _db.SaveChangesAsync();
-            return fileModel;
+            return file;
         }
+
 
         public async Task<FileModel> DeleteAsync(string fileId)
         {

@@ -7,6 +7,8 @@ namespace FilesServices
     {
         public Task<IEnumerable<FileModel>> GetAsync();
 
+        public Task<FileModel> GetAsync(string fileId);
+
         public Task<FileModel> PostAsync(FileModel file);
 
         public Task<FileModel> PutAsync(FileModel file);

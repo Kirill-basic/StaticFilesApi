@@ -8,7 +8,7 @@ namespace FilesServices
     {
         Stream GetFile(string completeFilePath);
         
-        Task PostFile(IFormFile file, string completeFilePath);
+        Task PostFileAsync(IFormFile file, string completeFilePath);
 
         Task DeleteFile(string completeFilePath);
     }

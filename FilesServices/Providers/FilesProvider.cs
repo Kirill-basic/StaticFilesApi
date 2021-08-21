@@ -16,7 +16,7 @@ namespace FilesServices
         }
 
 
-        public async Task PostFile(IFormFile file, string completeFilePath)
+        public async Task PostFileAsync(IFormFile file, string completeFilePath)
         {
             using var stream = new FileStream(completeFilePath, FileMode.Create, FileAccess.Write);
             await file.CopyToAsync(stream);
