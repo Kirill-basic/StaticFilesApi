@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -6,21 +7,27 @@ namespace FilesServices
 {
     public class FilesProvider : IFilesProvider
     {
-        public Task PostFile(Stream file, FileModel model)
+        public Stream GetFile(string completeFilePath)
         {
-            throw new NotImplementedException();
+            using (var stream = new FileStream(completeFilePath, FileMode.Open))
+            {
+                return stream;
+            }
         }
 
 
-        public Task EditFile(Stream file, FileModel model)
+        public async Task PostFile(IFormFile file, string completeFilePath)
         {
-            throw new NotImplementedException();
+            using var stream = new FileStream(completeFilePath, FileMode.Create, FileAccess.Write);
+            await file.CopyToAsync(stream);
         }
 
 
-        public Task DeleteFile(string fileId)
+        public Task DeleteFile(string completeFilePath)
         {
-            throw new NotImplementedException();
+            File.Delete(completeFilePath);
+
+            return Task.CompletedTask;
         }
     }
 }

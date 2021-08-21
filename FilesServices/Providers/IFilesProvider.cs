@@ -1,12 +1,15 @@
-﻿using System.IO;
+﻿using Microsoft.AspNetCore.Http;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace FilesServices
 {
     public interface IFilesProvider
     {
-        Task DeleteFile(string fileId);
-        Task EditFile(Stream file, FileModel model);
-        Task PostFile(Stream file, FileModel model);
+        Stream GetFile(string completeFilePath);
+        
+        Task PostFile(IFormFile file, string completeFilePath);
+
+        Task DeleteFile(string completeFilePath);
     }
 }
