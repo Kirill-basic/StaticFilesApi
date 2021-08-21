@@ -1,6 +1,7 @@
 ﻿using FilesServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -22,7 +23,7 @@ namespace StaticFilesApi.Controllers
         [HttpGet("[controller]")]
         public async Task<ActionResult<IEnumerable<FileModel>>> GetAsync()
         {
-            var list =  await _filesService.GetAsync();
+            var list = await _filesService.GetAsync();
 
             if (!list.Any())
             {
@@ -33,41 +34,45 @@ namespace StaticFilesApi.Controllers
         }
 
 
-        [HttpGet("[controller]/[action]/{fileId}")]
-        public Task<Stream> Get(string fileId)
+        [HttpGet("[controller]/{fileId}")]
+        public async Task<Stream> Get(string fileId)
         {
-            return null;
+            var stream = await _filesService.GetAsync(fileId);
+
+            return stream;
         }
 
 
-        [HttpPost]
-        public ActionResult<FileModel> Post(IFormFile file)
+        [HttpPost("[controller]")]
+        public async Task<ActionResult<FileModel>> PostAsync([FromForm] IFormFile file)
         {
             if (file == null)
             {
                 return BadRequest("File was null");
             }
 
-            var fileModel = _filesService.Post(file);
+            var fileModel = await _filesService.PostAsync(file);
 
             return fileModel;
         }
 
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult<FileModel> Put(FileModel fileInfo)
+        //TODO:remove antiforgery later
+        [HttpPut("[controller]")]
+        public async Task<ActionResult<FileModel>> PutAsync([FromForm] string jsonModel)
         {
-            var fileModel = _filesService.Put(fileInfo);
+            var model = JsonConvert.DeserializeObject<FileModel>(jsonModel);
 
-            return fileModel;
+            var updatedFileModel = await _filesService.PutAsync(model);
+
+            return updatedFileModel;
         }
 
 
-        [HttpGet]
-        public ActionResult<FileModel> Delete(string id)
+        [HttpDelete("[controller]/{id}")]
+        public async Task<ActionResult<FileModel>> DeleteAsync([FromRoute] string id)
         {
-            var fileModel = _filesService.Delete(id);
+            var fileModel = await _filesService.DeleteAsync(id);
 
             return fileModel;
         }

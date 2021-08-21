@@ -1,6 +1,6 @@
 ﻿using FolderService;
 using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
@@ -11,42 +11,81 @@ namespace FilesServices
     {
         private readonly IFolderHandlerService _folderHandler;
         private readonly IFilesProvider _filesProvider;
-        private readonly FileModelsContext _modelsContext;
+        private readonly IFileModelProvider _modelProvider;
 
-        public FilesService(IFolderHandlerService folderHandler, IFilesProvider filesProvider, FileModelsContext modelsContext)
+        public FilesService(IFolderHandlerService folderHandler, IFilesProvider filesProvider, IFileModelProvider modelProvider)
         {
             _folderHandler = folderHandler;
             _filesProvider = filesProvider;
-            _modelsContext = modelsContext;
+            _modelProvider = modelProvider;
         }
 
         public async Task<IEnumerable<FileModel>> GetAsync()
         {
-            return await _modelsContext.FileModels.ToListAsync();
+            return await _modelProvider.GetAsync();
         }
 
 
-        public Stream Get(string fileId)
+        public async Task<Stream> GetAsync(string fileId)
         {
-            return null;
+            var fileInfo = await _modelProvider.GetAsync(fileId);
+            if (fileInfo == null)
+            {
+                return null;
+            }
+
+            var completeFilePath = _folderHandler.GetCompleteFilePath(fileInfo.Id, fileInfo.Extension);
+
+            var file = _filesProvider.GetFile(completeFilePath);
+
+            return file;
         }
 
 
-        public FileModel Post(IFormFile file)
+        //пляж ай-петри или пляж марат
+        public async Task<FileModel> PostAsync(IFormFile file)
         {
-            return null;
+            var fileName = Path.GetFileNameWithoutExtension(file.FileName);
+            var fileExtension = Path.GetExtension(file.FileName);
+            var fileId = Guid.NewGuid().ToString();
+            var completeFilePath = _folderHandler.GetCompleteFilePath(fileId, fileExtension);
+
+            var fileModel = new FileModel()
+            {
+                Id = fileId,
+                Name = fileName,
+                Extension = fileExtension,
+            };
+
+            await _modelProvider.PostAsync(fileModel);
+            await _filesProvider.PostFileAsync(file, completeFilePath);
+
+            return fileModel;
         }
 
 
-        public FileModel Put(FileModel model)
+        public async Task<FileModel> PutAsync(FileModel model)
         {
-            return null;
+            var updatedFileModel = await _modelProvider.PutAsync(model);
+
+            return updatedFileModel;
         }
 
 
-        public FileModel Delete(string fileId)
+        public async Task<FileModel> DeleteAsync(string fileId)
         {
-            return null;
+            var fileModel = await _modelProvider.DeleteAsync(fileId);
+
+            if (fileModel is null)
+            {
+                return null;
+            }
+
+            var completeFilePath = _folderHandler.GetCompleteFilePath(fileModel.Id, fileModel.Extension);
+
+            await _filesProvider.DeleteFile(completeFilePath);
+
+            return fileModel;
         }
     }
 }

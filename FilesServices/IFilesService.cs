@@ -9,12 +9,12 @@ namespace FilesServices
     {
         public Task<IEnumerable<FileModel>> GetAsync();
         
-        public Stream Get(string fileId);
+        public Task<Stream> GetAsync(string fileId);
         
-        public FileModel Post(IFormFile file);
+        public Task<FileModel> PostAsync(IFormFile file);
         
-        public FileModel Put(FileModel model);
+        public Task<FileModel> PutAsync(FileModel model);
         
-        public FileModel Delete(string fileId);
+        public Task<FileModel> DeleteAsync(string fileId);
     }
 }
