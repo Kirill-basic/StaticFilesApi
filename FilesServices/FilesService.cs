@@ -1,4 +1,5 @@
 ﻿using FolderService;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.IO;
@@ -31,13 +32,13 @@ namespace FilesServices
         }
 
 
-        public FileModel Post(Stream file, FileModel model)
+        public FileModel Post(IFormFile file)
         {
             return null;
         }
 
 
-        public FileModel Put(Stream file, FileModel model)
+        public FileModel Put(FileModel model)
         {
             return null;
         }

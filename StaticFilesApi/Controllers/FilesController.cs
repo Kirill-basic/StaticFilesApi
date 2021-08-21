@@ -1,4 +1,5 @@
 ﻿using FilesServices;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -33,16 +34,23 @@ namespace StaticFilesApi.Controllers
 
 
         [HttpGet("[controller]/[action]/{fileId}")]
-        public ActionResult<IEnumerable<FileModel>> Get(string fileId)
+        public Task<Stream> Get(string fileId)
         {
             return null;
         }
 
 
         [HttpPost]
-        public ActionResult<FileModel> Post(FileStream file, FileModel fileInfo)
+        public ActionResult<FileModel> Post(IFormFile file)
         {
-            return null;
+            if (file == null)
+            {
+                return BadRequest("File was null");
+            }
+
+            var fileModel = _filesService.Post(file);
+
+            return fileModel;
         }
 
 
@@ -50,14 +58,18 @@ namespace StaticFilesApi.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult<FileModel> Put(FileModel fileInfo)
         {
-            throw new NotImplementedException();
+            var fileModel = _filesService.Put(fileInfo);
+
+            return fileModel;
         }
 
 
         [HttpGet]
         public ActionResult<FileModel> Delete(string id)
         {
-            return null;
+            var fileModel = _filesService.Delete(id);
+
+            return fileModel;
         }
     }
 }

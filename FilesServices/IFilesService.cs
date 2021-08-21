@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -10,9 +11,9 @@ namespace FilesServices
         
         public Stream Get(string fileId);
         
-        public FileModel Post(Stream file, FileModel model);
+        public FileModel Post(IFormFile file);
         
-        public FileModel Put(Stream file, FileModel model);
+        public FileModel Put(FileModel model);
         
         public FileModel Delete(string fileId);
     }
