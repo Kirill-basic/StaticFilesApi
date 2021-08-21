@@ -16,6 +16,7 @@ namespace StaticFilesApi
             services.AddTransient<IFolderHandlerService, FolderHandlerService>();
             services.AddTransient<IFilesService, FilesService>();
             services.AddTransient<IFilesProvider, FilesProvider>();
+            services.AddTransient<IFileModelProvider, FileModelProvider>();
 
             services.AddDbContext<FileModelsContext>(options =>
             {
