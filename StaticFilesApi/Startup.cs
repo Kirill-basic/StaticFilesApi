@@ -6,6 +6,9 @@ using Microsoft.Extensions.Hosting;
 using System;
 using FilesServices;
 using FolderService;
+using Microsoft.OpenApi.Models;
+using System.IO;
+using System.Reflection;
 
 namespace StaticFilesApi
 {
@@ -26,14 +29,22 @@ namespace StaticFilesApi
                     builder.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
                 });
             });
-            
 
             services.AddControllers();
+
+            //TODO:add swagger
+            services.AddSwaggerGen(x =>
+            {
+                x.SwaggerDoc("v1", new OpenApiInfo { Title = "StaticFilesApi", Version = "v1" });
+            });
         }
 
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "StaticFilesApi v1"));
+         
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
