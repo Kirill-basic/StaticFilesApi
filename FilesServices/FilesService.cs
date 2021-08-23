@@ -48,7 +48,7 @@ namespace FilesServices
             var fileName = Path.GetFileNameWithoutExtension(file.FileName);
             var fileExtension = Path.GetExtension(file.FileName);
             var fileId = Guid.NewGuid().ToString();
-            var completeFilePath = _folderHandler.GetCompleteFilePath(fileId, fileExtension);
+            var completeFilePath = _folderHandler.GetCompleteFilePath(fileName, fileExtension);
 
             var fileModel = new FileModel()
             {
