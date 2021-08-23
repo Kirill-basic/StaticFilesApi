@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -32,14 +33,22 @@ namespace StaticFilesApi.Controllers
         [HttpGet("[controller]")]
         public async Task<ActionResult<IEnumerable<FileModel>>> GetAsync()
         {
-            var list = await _filesService.GetAsync();
-
-            if (!list.Any())
+            try
             {
-                return NotFound();
-            }
+                var list = await _filesService.GetAsync();
 
-            return Ok(list);
+                if (!list.Any())
+                {
+                    return NotFound();
+                }
+
+                return Ok(list);
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest();
+            }
         }
 
 

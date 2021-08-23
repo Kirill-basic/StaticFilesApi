@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -15,8 +16,15 @@ namespace FilesServices
 
         public async Task<IEnumerable<FileModel>> GetAsync()
         {
-            var files = await _db.FileModels.ToListAsync();
-            return files;
+            try
+            {
+                var files = await _db.FileModels.ToListAsync();
+                return files;
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
         }
 
 

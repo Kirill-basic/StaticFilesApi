@@ -22,7 +22,7 @@ namespace FilesServices
 
         public async Task<IEnumerable<FileModel>> GetAsync()
         {
-            return await _modelProvider.GetAsync();
+                return await _modelProvider.GetAsync();
         }
 
 
