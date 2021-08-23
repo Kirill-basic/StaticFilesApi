@@ -43,12 +43,13 @@ namespace FilesServices
 
 
         //пляж ай-петри или пляж марат
+        //TODO:Return file name instead of file id
         public async Task<FileModel> PostAsync(IFormFile file)
         {
             var fileName = Path.GetFileNameWithoutExtension(file.FileName);
             var fileExtension = Path.GetExtension(file.FileName);
             var fileId = Guid.NewGuid().ToString();
-            var completeFilePath = _folderHandler.GetCompleteFilePath(fileName, fileExtension);
+            var completeFilePath = _folderHandler.GetCompleteFilePath(fileId, fileExtension);
 
             var fileModel = new FileModel()
             {
