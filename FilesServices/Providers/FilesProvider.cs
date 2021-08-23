@@ -9,10 +9,9 @@ namespace FilesServices
     {
         public Stream GetFile(string completeFilePath)
         {
-            using (var stream = new FileStream(completeFilePath, FileMode.Open))
-            {
-                return stream;
-            }
+            var stream = File.OpenRead(completeFilePath);
+
+            return stream;
         }
 
 
