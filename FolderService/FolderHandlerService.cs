@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 
 namespace FolderService
@@ -24,10 +25,22 @@ namespace FolderService
 
         public string GetCompleteFilePath(string fileName, string fileExtension)
         {
-            var fullFileName = Path.ChangeExtension(fileName, fileExtension);
-            var fileSubFolder = GetFileSubFolder(fileName, fileExtension);
+            try
+            {
+                if (fileName is null)
+                {
+                    return null;
+                }
 
-            return Path.Combine(fileSubFolder, fullFileName);
+                var fullFileName = Path.ChangeExtension(fileName, fileExtension);
+                var fileSubFolder = GetFileSubFolder(fileName, fileExtension);
+
+                return Path.Combine(fileSubFolder, fullFileName);
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
         }
 
 
@@ -36,7 +49,7 @@ namespace FolderService
             string filesSubFolderPath;
             var filesDirectory = CreateFilesDirectory();
 
-            switch (GetFileTypeByExtension(fileName))
+            switch (GetFileTypeByExtension(fileExtension))
             {
                 case FileType.Image:
                     filesSubFolderPath = Path.Combine(filesDirectory, _imagesFolder);

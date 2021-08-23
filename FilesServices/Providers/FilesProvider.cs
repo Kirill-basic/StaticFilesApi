@@ -9,9 +9,16 @@ namespace FilesServices
     {
         public Stream GetFile(string completeFilePath)
         {
-            var stream = File.OpenRead(completeFilePath);
+            try
+            {
+                var stream = File.OpenRead(completeFilePath);
 
-            return stream;
+                return stream;
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
         }
 
 

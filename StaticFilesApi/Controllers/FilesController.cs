@@ -52,6 +52,7 @@ namespace StaticFilesApi.Controllers
         }
 
 
+        //TODO:don't like returning null think of what can i do with this
         /// <summary>
         /// Download file by id
         /// </summary>
@@ -65,9 +66,26 @@ namespace StaticFilesApi.Controllers
         [HttpGet("[controller]/{fileId}")]
         public async Task<Stream> Get(string fileId)
         {
-            var stream = await _filesService.GetAsync(fileId);
+            try
+            {
+                if (fileId is null)
+                {
+                    return null;
+                }
 
-            return stream;
+                var stream = await _filesService.GetAsync(fileId);
+
+                if (stream is null)
+                {
+                    return null;
+                }
+
+                return stream;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
 

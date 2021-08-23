@@ -22,23 +22,36 @@ namespace FilesServices
 
         public async Task<IEnumerable<FileModel>> GetAsync()
         {
-                return await _modelProvider.GetAsync();
+            return await _modelProvider.GetAsync();
         }
 
 
         public async Task<Stream> GetAsync(string fileId)
         {
-            var fileInfo = await _modelProvider.GetAsync(fileId);
-            if (fileInfo == null)
+            try
             {
-                return null;
+                var fileInfo = await _modelProvider.GetAsync(fileId);
+
+                if (fileInfo == null)
+                {
+                    return null;
+                }
+
+                var completeFilePath = _folderHandler.GetCompleteFilePath(fileInfo.Id, fileInfo.Extension);
+
+                if (completeFilePath is null)
+                {
+                    throw new Exception("Couldn't combine file path");
+                }
+
+                var file = _filesProvider.GetFile(completeFilePath);
+
+                return file;
             }
-
-            var completeFilePath = _folderHandler.GetCompleteFilePath(fileInfo.Id, fileInfo.Extension);
-
-            var file = _filesProvider.GetFile(completeFilePath);
-
-            return file;
+            catch (Exception e)
+            {
+                throw;
+            }
         }
 
 

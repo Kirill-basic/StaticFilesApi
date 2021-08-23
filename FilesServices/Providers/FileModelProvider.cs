@@ -30,9 +30,16 @@ namespace FilesServices
 
         public async Task<FileModel> GetAsync(string fileId)
         {
-            var fileModels = await _db.FileModels.FirstOrDefaultAsync(x => x.Id == fileId);
+            try
+            {
+                var fileModel = await _db.FileModels.FirstOrDefaultAsync(x => x.Id == fileId);
 
-            return fileModels;
+                return fileModel;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
 
