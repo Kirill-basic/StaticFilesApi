@@ -9,6 +9,11 @@ namespace FilesServices
     {
         public Stream GetFile(string completeFilePath)
         {
+            if (completeFilePath is null)
+            {
+                return null;
+            }
+
             try
             {
                 var stream = File.OpenRead(completeFilePath);

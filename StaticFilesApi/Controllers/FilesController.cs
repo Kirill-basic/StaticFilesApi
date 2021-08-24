@@ -66,13 +66,13 @@ namespace StaticFilesApi.Controllers
         [HttpGet("[controller]/{fileId}")]
         public async Task<Stream> Get(string fileId)
         {
+            if (fileId is null)
+            {
+                return null;
+            }
+
             try
             {
-                if (fileId is null)
-                {
-                    return null;
-                }
-
                 var stream = await _filesService.GetAsync(fileId);
 
                 if (stream is null)
@@ -102,13 +102,13 @@ namespace StaticFilesApi.Controllers
         [HttpPost("[controller]")]
         public async Task<ActionResult<FileModel>> PostAsync([FromForm] IFormFile file)
         {
+            if (file is null)
+            {
+                return BadRequest("File is null");
+            }
+
             try
             {
-                if (file is null)
-                {
-                    return BadRequest("File is null");
-                }
-
                 var fileModel = await _filesService.PostAsync(file);
 
                 if (fileModel is null)

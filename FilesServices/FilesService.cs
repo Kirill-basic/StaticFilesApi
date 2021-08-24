@@ -28,6 +28,11 @@ namespace FilesServices
 
         public async Task<Stream> GetAsync(string fileId)
         {
+            if (fileId is null)
+            {
+                return null;
+            }
+
             try
             {
                 var fileInfo = await _modelProvider.GetAsync(fileId);
@@ -59,13 +64,13 @@ namespace FilesServices
         //TODO:Return file name instead of file id
         public async Task<FileModel> PostAsync(IFormFile file)
         {
+            if (file is null)
+            {
+                return null;
+            }
+
             try
             {
-                if (file is null)
-                {
-                    return null;
-                }
-
                 var fileName = Path.GetFileNameWithoutExtension(file.FileName);
 
                 if (fileName is null)
@@ -105,7 +110,7 @@ namespace FilesServices
         {
             if (model is null)
             {
-                throw new ArgumentNullException(nameof(model));
+                return null;
             }
 
             try
@@ -114,9 +119,8 @@ namespace FilesServices
 
                 return updatedFileModel;
             }
-            catch (Exception)
+            catch (Exception e)
             {
-
                 throw;
             }
         }
