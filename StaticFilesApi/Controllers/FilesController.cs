@@ -177,9 +177,26 @@ namespace StaticFilesApi.Controllers
         [HttpDelete("[controller]/{fileId}")]
         public async Task<ActionResult<FileModel>> DeleteAsync([FromRoute] string fileId)
         {
-            var fileModel = await _filesService.DeleteAsync(fileId);
+            if (fileId is null)
+            {
+                return BadRequest("FileId was empty");
+            }
 
-            return fileModel;
+            try
+            {
+                var fileModel = await _filesService.DeleteAsync(fileId);
+
+                if (fileModel is null)
+                {
+                    return NotFound();
+                }
+
+                return fileModel;
+            }
+            catch (Exception e)
+            {
+                return BadRequest();
+            }
         }
     }
 }

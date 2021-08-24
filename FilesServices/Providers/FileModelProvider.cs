@@ -90,15 +90,27 @@ namespace FilesServices
 
         public async Task<FileModel> DeleteAsync(string fileId)
         {
-            var fileModel = await _db.FileModels.FirstOrDefaultAsync(x => x.Id == fileId);
-            if (fileModel is null)
+            if (fileId is null)
             {
                 return null;
             }
 
-            _db.FileModels.Remove(fileModel);
-            await _db.SaveChangesAsync();
-            return fileModel;
+            try
+            {
+                var fileModel = await _db.FileModels.FirstOrDefaultAsync(x => x.Id == fileId);
+                if (fileModel is null)
+                {
+                    return null;
+                }
+
+                _db.FileModels.Remove(fileModel);
+                await _db.SaveChangesAsync();
+                return fileModel;
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
         }
     }
 }

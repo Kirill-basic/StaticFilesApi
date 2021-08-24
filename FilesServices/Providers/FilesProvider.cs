@@ -43,9 +43,21 @@ namespace FilesServices
 
         public Task DeleteFile(string completeFilePath)
         {
-            File.Delete(completeFilePath);
+            if (completeFilePath is null)
+            {
+                throw new ArgumentNullException(nameof(completeFilePath));
+            }
 
-            return Task.CompletedTask;
+            try
+            {
+                File.Delete(completeFilePath);
+
+                return Task.CompletedTask;
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
         }
     }
 }

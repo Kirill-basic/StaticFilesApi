@@ -124,18 +124,36 @@ namespace FilesServices
 
         public async Task<FileModel> DeleteAsync(string fileId)
         {
-            var fileModel = await _modelProvider.DeleteAsync(fileId);
-
-            if (fileModel is null)
+            if (fileId is null)
             {
                 return null;
             }
 
-            var completeFilePath = _folderHandler.GetCompleteFilePath(fileModel.Id, fileModel.Extension);
+            try
+            {
+                var fileModel = await _modelProvider.DeleteAsync(fileId);
 
-            await _filesProvider.DeleteFile(completeFilePath);
+                if (fileModel is null)
+                {
+                    return null;
+                }
 
-            return fileModel;
+                var completeFilePath = _folderHandler.GetCompleteFilePath(fileModel.Id, fileModel.Extension);
+
+                if (completeFilePath is null)
+                {
+                    await _modelProvider.PostAsync(fileModel);
+                    throw new ArgumentNullException(nameof(completeFilePath));
+                }
+
+                await _filesProvider.DeleteFile(completeFilePath);
+
+                return fileModel;
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
         }
     }
 }
