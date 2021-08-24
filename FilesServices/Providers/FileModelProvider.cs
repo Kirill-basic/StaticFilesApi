@@ -61,16 +61,30 @@ namespace FilesServices
         //TODO:try to remove ChangeTracker later
         public async Task<FileModel> PutAsync(FileModel file)
         {
-            var fileModel = await _db.FileModels.FirstOrDefaultAsync(x => x.Id == file.Id);
-            if (fileModel is null)
+            if (file is null || file.Id is null)
             {
-                return null;
+                throw new Exception("Incorrect model");
             }
-            _db.ChangeTracker.Clear();
 
-            _db.FileModels.Update(file);
-            await _db.SaveChangesAsync();
-            return file;
+            try
+            {
+                var fileModel = await _db.FileModels.FirstOrDefaultAsync(x => x.Id == file.Id);
+
+                if (fileModel is null)
+                {
+                    return null;
+                }
+
+                _db.ChangeTracker.Clear();
+
+                _db.FileModels.Update(file);
+                await _db.SaveChangesAsync();
+                return file;
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
         }
 
 

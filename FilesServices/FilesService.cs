@@ -103,9 +103,22 @@ namespace FilesServices
 
         public async Task<FileModel> PutAsync(FileModel model)
         {
-            var updatedFileModel = await _modelProvider.PutAsync(model);
+            if (model is null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
 
-            return updatedFileModel;
+            try
+            {
+                var updatedFileModel = await _modelProvider.PutAsync(model);
+
+                return updatedFileModel;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
 

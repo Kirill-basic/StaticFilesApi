@@ -138,11 +138,29 @@ namespace StaticFilesApi.Controllers
         [HttpPut("[controller]")]
         public async Task<ActionResult<FileModel>> PutAsync([FromForm] string jsonModel)
         {
-            var model = JsonConvert.DeserializeObject<FileModel>(jsonModel);
+            if (jsonModel is null)
+            {
+                return BadRequest("Model was empty");
+            }
 
-            var updatedFileModel = await _filesService.PutAsync(model);
+            try
+            {
+                var model = JsonConvert.DeserializeObject<FileModel>(jsonModel);
 
-            return updatedFileModel;
+                if (model is null)
+                {
+                    //TODO:check incorrect model
+                    return BadRequest("Incorrect model");
+                }
+
+                var updatedFileModel = await _filesService.PutAsync(model);
+
+                return updatedFileModel;
+            }
+            catch (Exception e)
+            {
+                return BadRequest();
+            }
         }
 
 
