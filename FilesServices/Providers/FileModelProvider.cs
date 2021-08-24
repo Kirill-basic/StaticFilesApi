@@ -45,9 +45,16 @@ namespace FilesServices
 
         public async Task<FileModel> PostAsync(FileModel file)
         {
-            _db.FileModels.Add(file);
-            await _db.SaveChangesAsync();
-            return file;
+            try
+            {
+                _db.FileModels.Add(file);
+                await _db.SaveChangesAsync();
+                return file;
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
         }
 
 

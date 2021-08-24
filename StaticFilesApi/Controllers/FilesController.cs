@@ -102,14 +102,26 @@ namespace StaticFilesApi.Controllers
         [HttpPost("[controller]")]
         public async Task<ActionResult<FileModel>> PostAsync([FromForm] IFormFile file)
         {
-            if (file == null)
+            try
             {
-                return BadRequest("File was null");
+                if (file is null)
+                {
+                    return BadRequest("File is null");
+                }
+
+                var fileModel = await _filesService.PostAsync(file);
+
+                if (fileModel is null)
+                {
+                    return BadRequest("Error saving file, please try again later");
+                }
+
+                return fileModel;
             }
-
-            var fileModel = await _filesService.PostAsync(file);
-
-            return fileModel;
+            catch (Exception e)
+            {
+                return BadRequest();
+            }
         }
 
 

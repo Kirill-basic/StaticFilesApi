@@ -59,22 +59,45 @@ namespace FilesServices
         //TODO:Return file name instead of file id
         public async Task<FileModel> PostAsync(IFormFile file)
         {
-            var fileName = Path.GetFileNameWithoutExtension(file.FileName);
-            var fileExtension = Path.GetExtension(file.FileName);
-            var fileId = Guid.NewGuid().ToString();
-            var completeFilePath = _folderHandler.GetCompleteFilePath(fileId, fileExtension);
-
-            var fileModel = new FileModel()
+            try
             {
-                Id = fileId,
-                Name = fileName,
-                Extension = fileExtension,
-            };
+                if (file is null)
+                {
+                    return null;
+                }
 
-            await _modelProvider.PostAsync(fileModel);
-            await _filesProvider.PostFileAsync(file, completeFilePath);
+                var fileName = Path.GetFileNameWithoutExtension(file.FileName);
 
-            return fileModel;
+                if (fileName is null)
+                {
+                    throw new Exception("File name was empty");
+                }
+
+                var fileExtension = Path.GetExtension(file.FileName);
+                var fileId = Guid.NewGuid().ToString();
+                var completeFilePath = _folderHandler.GetCompleteFilePath(fileId, fileExtension);
+
+                if (completeFilePath is null)
+                {
+                    throw new ArgumentNullException(nameof(completeFilePath));
+                }
+
+                var fileModel = new FileModel()
+                {
+                    Id = fileId,
+                    Name = fileName,
+                    Extension = fileExtension,
+                };
+
+                var savedFileModel = await _modelProvider.PostAsync(fileModel);
+                await _filesProvider.PostFileAsync(file, completeFilePath);
+
+                return savedFileModel;
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
         }
 
 
