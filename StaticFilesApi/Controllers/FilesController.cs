@@ -116,7 +116,7 @@ namespace StaticFilesApi.Controllers
                     return BadRequest("Error saving file, please try again later");
                 }
 
-                return fileModel;
+                return Ok(fileModel);
             }
             catch (Exception e)
             {
@@ -155,7 +155,7 @@ namespace StaticFilesApi.Controllers
 
                 var updatedFileModel = await _filesService.PutAsync(model);
 
-                return updatedFileModel;
+                return Ok(updatedFileModel);
             }
             catch (Exception e)
             {
@@ -191,7 +191,7 @@ namespace StaticFilesApi.Controllers
                     return NotFound();
                 }
 
-                return fileModel;
+                return Ok(fileModel);
             }
             catch (Exception e)
             {
