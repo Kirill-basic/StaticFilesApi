@@ -1,6 +1,7 @@
 ﻿using FilesServices;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -13,10 +14,12 @@ namespace StaticFilesApi.Controllers
     public class FilesController : ControllerBase
     {
         private readonly IFilesService _filesService;
+        private readonly ILogger<FilesController> _logger;
 
-        public FilesController(IFilesService filesService)
+        public FilesController(IFilesService filesService, ILogger<FilesController> logger)
         {
             _filesService = filesService;
+            _logger = logger;
         }
 
 
