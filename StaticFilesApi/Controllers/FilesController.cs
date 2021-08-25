@@ -36,20 +36,24 @@ namespace StaticFilesApi.Controllers
         [HttpGet("[controller]")]
         public async Task<ActionResult<IEnumerable<FileModel>>> GetAsync()
         {
+            _logger.LogInformation("Invoking get method");
+            
             try
             {
                 var list = await _filesService.GetAsync();
 
                 if (!list.Any())
                 {
+                    _logger.LogInformation("list was empty, returning 404");
                     return NotFound();
                 }
 
+                _logger.LogInformation("Files found successfully, returning 200");
                 return Ok(list);
             }
             catch (Exception e)
             {
-
+                _logger.LogError(e, "Error getting files, returning 400");
                 return BadRequest();
             }
         }
@@ -69,10 +73,15 @@ namespace StaticFilesApi.Controllers
         [HttpGet("[controller]/{fileId}")]
         public async Task<Stream> Get(string fileId)
         {
+            _logger.LogInformation("Invoking Get by id method");
+
             if (fileId is null)
             {
+                _logger.LogWarning("fileId is null, returning null");
                 return null;
             }
+
+            _logger.LogInformation($"Getting file with id {fileId}");
 
             try
             {
@@ -80,13 +89,16 @@ namespace StaticFilesApi.Controllers
 
                 if (stream is null)
                 {
+                    _logger.LogInformation("stream was null, returning null");
                     return null;
                 }
 
+                _logger.LogInformation("stream received successfully");
                 return stream;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                _logger.LogError(e, "Error getting file");
                 return null;
             }
         }
@@ -105,8 +117,11 @@ namespace StaticFilesApi.Controllers
         [HttpPost("[controller]")]
         public async Task<ActionResult<FileModel>> PostAsync([FromForm] IFormFile file)
         {
+            _logger.LogInformation("Invoking post method");
+
             if (file is null)
             {
+                _logger.LogInformation("File was null, returning 400");
                 return BadRequest("File is null");
             }
 
@@ -116,13 +131,16 @@ namespace StaticFilesApi.Controllers
 
                 if (fileModel is null)
                 {
+                    _logger.LogError("fileModel is null, retuning 400");
                     return BadRequest("Error saving file, please try again later");
                 }
 
+                _logger.LogInformation("file posted successfully, returning 200");
                 return Ok(fileModel);
             }
             catch (Exception e)
             {
+                _logger.LogError(e, "error posing file, returning 400");
                 return BadRequest();
             }
         }
@@ -141,8 +159,11 @@ namespace StaticFilesApi.Controllers
         [HttpPut("[controller]")]
         public async Task<ActionResult<FileModel>> PutAsync([FromForm] string jsonModel)
         {
+            _logger.LogInformation("Invoking Put method");
+
             if (jsonModel is null)
             {
+                _logger.LogInformation("jsonmodel was null, returning 400");
                 return BadRequest("Model was empty");
             }
 
@@ -152,16 +173,20 @@ namespace StaticFilesApi.Controllers
 
                 if (model is null)
                 {
+                    _logger.LogInformation("model was null, returning 400");
                     //TODO:check incorrect model
                     return BadRequest("Incorrect model");
                 }
 
+                //TODO:add checking null here
                 var updatedFileModel = await _filesService.PutAsync(model);
 
+                _logger.LogInformation("File was upadted successfully, returning 200");
                 return Ok(updatedFileModel);
             }
             catch (Exception e)
             {
+                _logger.LogError(e, "Error updating file, returning 400");
                 return BadRequest();
             }
         }
@@ -180,8 +205,11 @@ namespace StaticFilesApi.Controllers
         [HttpDelete("[controller]/{fileId}")]
         public async Task<ActionResult<FileModel>> DeleteAsync([FromRoute] string fileId)
         {
+            _logger.LogInformation("Invoking Delete method");
+
             if (fileId is null)
             {
+                _logger.LogInformation("FileId was null, returning 400");
                 return BadRequest("FileId was empty");
             }
 
@@ -191,13 +219,16 @@ namespace StaticFilesApi.Controllers
 
                 if (fileModel is null)
                 {
+                    _logger.LogInformation("FileModel was null, returning 404");
                     return NotFound();
                 }
 
+                _logger.LogInformation("File was deleted successfully, returning 200");
                 return Ok(fileModel);
             }
             catch (Exception e)
             {
+                _logger.LogError(e, "Error deleting file, returning 400");
                 return BadRequest();
             }
         }
