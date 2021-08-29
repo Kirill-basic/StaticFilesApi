@@ -178,8 +178,13 @@ namespace StaticFilesApi.Controllers
                     return BadRequest("Incorrect model");
                 }
 
-                //TODO:add checking null here
                 var updatedFileModel = await _filesService.PutAsync(model);
+
+                if (updatedFileModel is null)
+                {
+                    _logger.LogInformation("File wasn't found, returning 404");
+                    return NotFound();
+                }
 
                 _logger.LogInformation("File was upadted successfully, returning 200");
                 return Ok(updatedFileModel);
