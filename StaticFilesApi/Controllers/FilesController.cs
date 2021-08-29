@@ -13,6 +13,10 @@ namespace StaticFilesApi.Controllers
 {
     public class FilesController : ControllerBase
     {
+        //Here is the link to postman collection for testing API
+        //https://www.getpostman.com/collections/8e7fede6f4550f684db0
+        //also possible to test from Swagger UI
+
         private readonly IFilesService _filesService;
         private readonly ILogger<FilesController> _logger;
 
