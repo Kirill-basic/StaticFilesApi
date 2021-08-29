@@ -9,7 +9,7 @@ namespace FilesServices
         public FileModelsContext(DbContextOptions<FileModelsContext> options)
             : base(options)
         {
-
+            Database.EnsureCreated();
         }
     }
 }
