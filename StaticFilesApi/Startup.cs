@@ -23,7 +23,7 @@ namespace StaticFilesApi
 
             services.AddDbContext<FileModelsContext>(options =>
             {
-                options.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=FilesDb;Trusted_Connection=True;", builder =>
+                options.UseSqlServer(Environment.GetEnvironmentVariable("ConnectionString"), builder =>
                 {
                     builder.CommandTimeout(300);
                     builder.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
